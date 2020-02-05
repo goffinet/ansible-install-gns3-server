@@ -8,6 +8,8 @@ easyrsa_clients:
   - name: client
 easyrsa_pki_dir: /etc/easyrsa/pki
 # OpenVPN variables
+openvpn_port: 443
+openvpn_proto: tcp
 openvpn_use_pam: false
 openvpn_client_to_client: false
 openvpn_comp_lzo: false
