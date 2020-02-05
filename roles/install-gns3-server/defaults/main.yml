@@ -1,0 +1,11 @@
+---
+gns3_release: "stable" # "stable", "unstable"
+gns3s_host: "127.0.0.1"
+gns3s_port: "3080"
+gns3s_images_path: "/home/gns3/images"
+gns3s_projects_path: "/home/gns3/projects"
+gns3s_appliances_path: "/home/gns3/appliances"
+gns3s_configs_path: "/home/gns3/configs"
+gns3s_report_errors: "True"
+gns3s_enable_kvm: "True"
+gns3s_require_kvm: "True"

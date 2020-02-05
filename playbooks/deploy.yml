@@ -1,0 +1,5 @@
+---
+- import_playbook: provision.yml
+- import_playbook: install-gns3-server.yml
+- import_playbook: synchronize-gns3-files.yml
+- import_playbook: send-credits.yml

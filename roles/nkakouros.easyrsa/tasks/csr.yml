@@ -1,0 +1,18 @@
+---
+
+- name: Generate CSRs
+  command: >-
+    easyrsa
+      {{ '--passout=pass:' + item.pass if item.pass | default(None) else '' }}
+      gen-req
+      {{ item.name }}
+      {{ 'nopass' if not item.pass | default(None) else '' }}
+  args:
+    creates: "{{ easyrsa_pki_dir }}/issued/{{ item.name }}.crt"
+  loop: "{{ easyrsa_servers + easyrsa_clients }}"
+  no_log: >-
+    {{
+      lookup('env', 'IN_MOLECULE')
+      | default(false, true)
+      | ternary(false, true)
+    }}

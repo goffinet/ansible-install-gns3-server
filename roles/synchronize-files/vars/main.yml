@@ -1,0 +1,7 @@
+---
+## Adapt it to your needs
+## Encrypt it with `ansible-vault encrypt vars/main.yml`
+#S3_URL: s3.fr-par.scw.cloud
+#S3_REGION: FR-PAR
+#S3_ACCESS_KEY: "XXXXX"
+#S3_SECRET_KEY: "XXXXX"

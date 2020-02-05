@@ -1,0 +1,20 @@
+---
+- name: "Remove Packet servers"
+  packet_device:
+    auth_token: "{{ packet_auth_token }}"
+    hostnames: ["{{ inventory_hostname_short }}"]
+    project_id: "{{ packet_project_id }}"
+    state: absent
+  delegate_to: 127.0.0.1
+
+- name: "Update dns entry"
+  cloudflare_dns:
+    zone: "{{ zone }}"
+    record: "{{ inventory_hostname_short }}"
+    type: A
+    account_email: "{{ cloudflare_account_email }}"
+    account_api_token: "{{ cloudflare_account_api_token }}"
+    state: absent
+  delegate_to: 127.0.0.1
+  when:
+    - zone is defined

@@ -1,0 +1,10 @@
+---
+#enable_routing:
+#  bridge: virbr0
+#  network_bridge: "192.168.122.0/24"
+#  network_tunnel: "172.16.253.0/24"
+
+enable_routing:
+  - bridge: virbr0
+    network_bridge: "192.168.122.0/24"
+    network_tunnel: "172.16.253.0/24"

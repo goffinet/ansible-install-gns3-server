@@ -1,0 +1,3 @@
+---
+- include_tasks: libvirtd-tools-installation.yml
+  tags: [install-libvirtd]

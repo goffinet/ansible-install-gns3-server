@@ -1,0 +1,5 @@
+---
+- name: restart gns3
+  systemd:
+    name: gns3
+    state: restarted

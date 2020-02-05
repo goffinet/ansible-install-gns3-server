@@ -1,0 +1,19 @@
+---
+libvirtd_apt:
+  - qemu-kvm
+  - libvirt-bin
+  - virtinst
+  - virt-viewer
+  - libguestfs-tools
+  - virt-manager
+  - uuid-runtime
+  - python-pip
+  - pkg-config
+  - libvirt-dev
+  - genisoimage
+  - netcat
+  - python-dev
+  - libyaml-dev
+  - libosinfo-bin
+  - virt-top
+  - tigervnc-viewer

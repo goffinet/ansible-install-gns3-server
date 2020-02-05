@@ -1,0 +1,21 @@
+---
+
+galaxy_info:
+  role_name: easyrsa
+  author: Nikolaos Kakouros
+  description: Installs easyrsa and generates keys and certificates
+
+  license: GPLv3
+
+  min_ansible_version: 2.8
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+
+  galaxy_tags:
+    - easyrsa
+    - openvpn
+
+dependencies: []

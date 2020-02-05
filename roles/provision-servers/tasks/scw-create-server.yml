@@ -1,0 +1,142 @@
+---
+- name: Gather Scaleway image facts
+  scaleway_image_info:
+    region: "{{ scw_region }}"
+    validate_certs: no
+    api_token: "{{ scw_api_token }}"
+  delegate_to: 127.0.0.1
+  register: result
+- name: Set cloud specific facts
+  set_fact:
+    images: >-
+      [{% for i in result.scaleway_image_info -%}
+        {% if i.name == scw_image_name and
+              i.arch == scw_image_arch and
+              i.root_volume.size == scw_image_size -%}
+        '{{ i.id }}'{% if not loop.last %},{% endif %}
+        {%- endif -%}
+      {%- endfor -%}]
+  delegate_to: 127.0.0.1
+- name: "set scw_image variable"
+  set_fact:
+    scw_image: "{{ images[0] }}"
+  delegate_to: 127.0.0.1
+- name: "set client_name to tag"
+  set_fact:
+    client_name: "{{ group_names }}"
+- name: "Create scw servers"
+  scaleway_compute:
+    api_token: "{{ scw_api_token }}"
+    organization: "{{ scw_organization }}"
+    name: "{{ inventory_hostname_short }}"
+    state: present
+    image: "{{ scw_image }}"
+    region: "{{ scw_region }}"
+    commercial_type: "{{ scw_type }}"
+    public_ip: dynamic
+    wait: true
+    wait_timeout: 900
+  delegate_to: 127.0.0.1
+- name: "start the server"
+  scaleway_compute:
+    api_token: "{{ scw_api_token }}"
+    organization: "{{ scw_organization }}"
+    name: "{{ inventory_hostname_short }}"
+    state: running
+    image: "{{ scw_image }}"
+    region: "{{ scw_region }}"
+    commercial_type: "{{ scw_type }}"
+    public_ip: dynamic
+    wait: true
+    wait_timeout: 600
+    tags: "{{ client_name }}"
+  delegate_to: 127.0.0.1
+  #when: "inventory_hostname not in ansible_facts.scaleway_server_facts|map(attribute='name')|list"
+- name: "update the server tags"
+  scaleway_compute:
+    api_token: "{{ scw_api_token }}"
+    organization: "{{ scw_organization }}"
+    name: "{{ inventory_hostname_short }}"
+    state: running
+    image: "{{ scw_image }}"
+    region: "{{ scw_region }}"
+    commercial_type: "{{ scw_type }}"
+    public_ip: dynamic
+    wait: true
+    wait_timeout: 600
+    tags: "{{ client_name }}"
+  delegate_to: 127.0.0.1
+  register: metadata
+- name: "update dns entry"
+  cloudflare_dns:
+    zone: "{{ zone }}"
+    record: "{{ inventory_hostname_short }}"
+    type: A
+    value: "{{ metadata.msg.public_ip.address }}"
+    account_email: "{{ cloudflare_account_email }}"
+    account_api_token: "{{ cloudflare_account_api_token }}"
+    state: present
+    solo: yes
+  delegate_to: 127.0.0.1
+  when: zone is defined
+- name: Wait 900 seconds for port 22 to become open and contain "OpenSSH"
+  wait_for:
+    port: 22
+    host: '{{ inventory_hostname }}'
+    search_regex: OpenSSH
+    delay: 10
+    timeout: 900
+  vars:
+    ansible_connection: local
+- name: "install python req for ansible"
+  raw: dnf install -y python || yum -y install python2 || apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qq install python-minimal
+  ignore_errors: yes
+  register: req_result
+  changed_when: "req_result.stdout is not search('0 newly installed') or req_result.stdout is not search('already installed')"
+- name: "Wait 900 seconds, start checking after 10 seconds"
+  wait_for_connection:
+    delay: 10
+    timeout: 900
+    connect_timeout: 10
+    sleep: 5
+- name: "Disable ifup@eth0.service"
+  systemd:
+    name: "ifup@eth0.service"
+    state: stopped
+    enabled: no
+    masked: yes
+- name: Disable auto upgrade
+  replace:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: '1'
+    replace: '0'
+- name: "mount the additional block device"
+  vars:
+    blk: "sda" # instead /dev/sda1
+    fs: "home" # without the root "opt" instead "/opt"
+  block:
+    - name: Clean fs path
+      file:
+        state: absent
+        path: "/{{ fs }}/"
+      ignore_errors: yes
+    - name: "Collect only facts returned by facter"
+      setup:
+    - name: "Get the device uuid"
+      set_fact:
+        blkuuid: "{{ ansible_devices.sda.partitions.sda1.uuid }}"
+    - name: "Create an automatic mount file"
+      template:
+        src: mount-file.j2
+        dest: "/etc/systemd/system/{{ fs }}.mount"
+        owner: root
+        group: root
+        mode: 0775
+    - name: "enable and start the mount service"
+      systemd:
+        daemon_reload: yes
+        name: "{{ fs }}.mount"
+        state: started
+        enabled: yes
+  when:
+    - metadata.msg.commercial_type == "C2L"

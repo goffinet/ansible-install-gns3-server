@@ -1,0 +1,12 @@
+node_modules
+_book
+ansible.log
+*.retry
+*.tfstate*
+.terraform*
+.DS_Store
+playbooks/vars/secret.yml
+playbooks/test.yml
+*.icloud
+*.log
+playbooks/inventories/private/*

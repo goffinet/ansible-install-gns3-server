@@ -1,0 +1,21 @@
+- name: "SYNCHRONIZE GNS3 FILES"
+  hosts: all
+  strategy: free
+  gather_facts: true
+  tags: [sync]
+  vars_files:
+    - vars/secret.yml
+    - vars/main.yml
+  vars:
+#    S3_URL: s3.fr-par.scw.cloud
+#    S3_REGION: FR-PAR
+#    S3_ACCESS_KEY: XXXXX
+#    S3_SECRET_KEY: XXXXX
+#    gns3s_files:
+#      - s3src: s3://labimages/gns3/images
+#        s3dst: /home/gns3/
+#      - s3src: s3://labimages/gns3/projects
+#        s3dst: /home/gns3/
+  roles:
+    - name: "synchronize gns3 files"
+      role: synchronize-files

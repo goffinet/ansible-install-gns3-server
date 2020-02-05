@@ -1,0 +1,58 @@
+---
+- name: Gather Scaleway image facts
+  scaleway_image_info:
+    api_token: "{{ scw_api_token }}"
+    region: "{{ scw_region }}"
+    validate_certs: no
+  delegate_to: 127.0.0.1
+  register: result
+- name: Set cloud specific facts
+  set_fact:
+    images: >-
+      [{% for i in result.scaleway_image_info -%}
+        {% if i.name == scw_image_name and
+              i.arch == scw_image_arch and
+              i.root_volume.size == scw_image_size -%}
+        '{{ i.id }}'{% if not loop.last %},{% endif %}
+        {%- endif -%}
+      {%- endfor -%}]
+  delegate_to: 127.0.0.1
+- name: "set scw_image variable"
+  set_fact:
+    scw_image: "{{ images[0] }}"
+  delegate_to: 127.0.0.1
+- name: "Ensure scw servers are running"
+  scaleway_compute:
+    api_token: "{{ scw_api_token }}"
+    organization: "{{ scw_organization }}"
+    name: "{{ inventory_hostname_short }}"
+    state: running
+    image: "{{ scw_image }}"
+    region: "{{ scw_region }}"
+    commercial_type: "{{ scw_type }}"
+    wait: true
+  delegate_to: 127.0.0.1
+  register: metadata
+- name: "Remove scw servers"
+  scaleway_compute:
+    api_token: "{{ scw_api_token }}"
+    organization: "{{ scw_organization }}"
+    name: "{{ inventory_hostname_short }}"
+    state: absent
+    image: "{{ scw_image }}"
+    region: "{{ scw_region }}"
+    commercial_type: "{{ scw_type }}"
+    wait: true
+    wait_timeout: 600
+  delegate_to: 127.0.0.1
+- name: "update dns entry"
+  cloudflare_dns:
+    zone: "{{ zone }}"
+    record: "{{ inventory_hostname_short }}"
+    type: A
+    account_email: "{{ cloudflare_account_email }}"
+    account_api_token: "{{ cloudflare_account_api_token }}"
+    state: absent
+  delegate_to: 127.0.0.1
+  when:
+    - zone is defined

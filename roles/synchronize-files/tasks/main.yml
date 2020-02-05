@@ -1,0 +1,3 @@
+---
+- include_tasks: synchronize-gns3-files.yml
+  tags: [sync]

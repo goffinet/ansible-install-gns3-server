@@ -1,0 +1,47 @@
+---
+- name: "Create and start Packet servers"
+  packet_device:
+    auth_token: "{{ packet_auth_token }}"
+    hostnames: ["{{ inventory_hostname_short }}"]
+    state: present
+    operating_system: "{{ packet_os }}"
+    project_id: "{{ packet_project_id }}"
+    facility: "{{ packet_facility }}"
+    plan: "{{ packet_plan }}"
+    wait_for_public_IPv: 4
+  delegate_to: 127.0.0.1
+  register: metadata
+
+- name: "update entry"
+  cloudflare_dns:
+    zone: "{{ zone }}"
+    record: "{{ inventory_hostname_short }}"
+    type: A
+    value: "{{ metadata.devices[0].public_ipv4 }}"
+    account_email: "{{ cloudflare_account_email }}"
+    account_api_token: "{{ cloudflare_account_api_token }}"
+    state: present
+  delegate_to: 127.0.0.1
+
+- name: Wait 600 seconds for port 22 to become open and contain "OpenSSH"
+  wait_for:
+    port: 22
+    host: '{{ inventory_hostname }}'
+    search_regex: OpenSSH
+    delay: 10
+    timeout: 600
+  vars:
+    ansible_connection: local
+
+- name: "install python req for ansible"
+  raw: dnf install -y python || yum -y install python2 || apt update && apt -y install python-minimal
+  ignore_errors: yes
+  register: req_result
+  changed_when: "req_result.stdout is not search('0 newly installed') or req_result.stdout is not search('already installed')"
+
+- name: "Wait 600 seconds, start checking after 10 seconds"
+  wait_for_connection:
+    delay: 10
+    timeout: 600
+    connect_timeout: 10
+    sleep: 5

@@ -1,0 +1,18 @@
+---
+- name: "SEND CREDITS"
+  hosts: all
+  strategy: free
+  gather_facts: true
+  vars_files:
+    - vars/secret.yml
+    - vars/main.yml
+  vars:
+    #language: fr
+    ## Google Mail ID
+    #mail_secret: "password"
+    #from_secret: "xxx@xxxx.xxx"
+    #to_secret: "yyy@yyyy.yyy"
+  roles:
+    - name: "send connexion details"
+      role: send-connexion-details
+      when: mail_to is defined

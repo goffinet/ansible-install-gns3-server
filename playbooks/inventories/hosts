@@ -1,0 +1,17 @@
+[gns3stest]
+gns3stest0.goffinet.net mail_to="goffinet@goffinet.eu" provider="scw" scw_type="C2M"
+#gns3stest1.goffinet.net mail_to="goffinet@goffinet.eu" provider="packet"
+
+[all:vars]
+zone="goffinet.net"
+ansible_ssh_user=root
+provider="scw" # packet
+scw_type="C2M"
+scw_region="par1"
+scw_image_name="Ubuntu Bionic Beaver"
+scw_image_arch="x86_64"
+scw_image_size=10000000000
+packet_facility="ams1"
+packet_plan="t1.small.x86"
+packet_os="ubuntu_18_04"
+packet_project_id="99bd4ec8-7fe1-4220-8958-67139209365c"

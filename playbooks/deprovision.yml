@@ -1,0 +1,17 @@
+---
+# Populate env vars : SCW_ORGANIZATION, SCW_DEFAULT_ORGANIZATION_ID and SCW_TOKEN
+# Populate env vars : CLOUDFLARE_API_EMAIL and CLOUDFLARE_API_TOKEN for dns entry update
+- name: "BAREMETAL DEPROVISIONING"
+  tags: [remove]
+  hosts: all
+  strategy: linear
+  serial: 6
+  gather_facts: False
+  vars_files:
+    - vars/secret.yml
+  vars:
+  tasks:
+    - name: "Provider deprovisionning"
+      include_role:
+        name: "provision-servers"
+        tasks_from: "{{ provider }}-remove-server"

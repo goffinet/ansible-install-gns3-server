@@ -1,0 +1,75 @@
+---
+- name: "set ppa url for stable version"
+  set_fact:
+    ppa_url: "{{ gns3s_stable }}"
+  when: gns3_release == "stable"
+- name: "set ppa url for unstable version"
+  set_fact:
+    ppa_url: "{{ gns3s_unstable }}"
+  when: gns3_release == "unstable"
+- name: "add gns3 keys"
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: A2E3EF7B
+    state: present
+- name: "add gns3 deb repository"
+  apt_repository:
+    repo: "deb {{ ppa_url }} bionic main"
+    state: present
+- name: "add gns3 deb-src repository"
+  apt_repository:
+    repo: "deb-src {{ ppa_url }} bionic main"
+    state: present
+- name: "upgrade all packages"
+  apt:
+    update_cache: yes
+    force: yes
+    force_apt_get: yes
+    upgrade: yes
+- name: "install gns3-server"
+  apt:
+    force: yes
+    state: present
+    force_apt_get: yes
+    name:
+      - gns3-server
+- name: "add a gns3 user"
+  user:
+    name: gns3
+    create_home: yes
+    state: present
+    append: yes
+    groups:
+      - ubridge
+      - kvm
+  notify: restart gns3
+- name: Creates directory
+  file:
+    path: /etc/gns3 #/home/gns3/.config/GNS3/2.2.0
+    state: directory
+    owner: gns3
+    group: gns3
+    mode: 0775
+  notify: restart gns3
+- name: "configure the gns3 server"
+  template:
+    src: gns3_server.conf.j2
+    dest: /etc/gns3/gns3_server.conf #/home/gns3/.config/GNS3/2.2.0/gns3_server.conf
+    owner: gns3
+    group: gns3
+    mode: 0755
+  notify: restart gns3
+- name: "install the gns3 service"
+  template:
+    src: gns3.service.j2
+    dest: /lib/systemd/system/gns3.service
+    owner: gns3
+    group: gns3
+    mode: 0755
+  notify: "restart gns3"
+- name: "enable and start the gns3 service"
+  systemd:
+    name: gns3
+    state: started
+    enabled: yes
+  notify: restart gns3

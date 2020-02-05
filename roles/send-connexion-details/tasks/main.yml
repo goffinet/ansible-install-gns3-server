@@ -1,0 +1,3 @@
+---
+- include_tasks: send-gns3-details.yml
+  tags: [send]

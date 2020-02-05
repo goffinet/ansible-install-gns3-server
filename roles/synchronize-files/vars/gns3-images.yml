@@ -1,0 +1,60 @@
+---
+gns3s_home: /home/gns3/
+#gns3s_files:
+#  - s3src: s3://labimages/gns3/images
+#    s3dst: "{{ gns3s_home }}"
+#  - s3src: s3://labimages/gns3/projects
+#    s3dst: "{{ gns3s_home }}"
+#  - s3src: s3://labimages/gns3/appliances
+#    s3dst: /usr/share/gns3/gns3-server/lib/python3.6/site-packages/gns3server
+gns3s_images:
+  - IOS/c3725-adventerprisek9-mz.124-15.T14.image
+  - IOS/c3725-adventerprisek9-mz.124-15.T14.image.md5sum
+  - IOS/c3745-adventerprisek9_ivs-mz.124-15.t8.image
+  - IOS/c3745-adventerprisek9_ivs-mz.124-15.t8.image.md5sum
+  - IOS/c7200-adventerprisek9-mz.124-24.T5.image
+  - IOS/c7200-adventerprisek9-mz.124-24.T5.image.md5sum
+  - QEMU/asav971.qcow2
+  - QEMU/asav971.qcow2.md5sum
+  - QEMU/centos7.5.qcow2
+  - QEMU/centos7.5.qcow2.md5sum
+  - QEMU/centos7.qcow2
+  - QEMU/centos7.qcow2.md5sum
+  - QEMU/centos-ready-to-install-hda.qcow2
+  - QEMU/centos-ready-to-install-hda.qcow2.md5sum
+  - QEMU/csr1000v-universalk9.16.5.1b-serial.qcow2
+  - QEMU/csr1000v-universalk9.16.5.1b-serial.qcow2.md5sum
+  - QEMU/cumulus-linux-3.7.0-vx-amd64-qemu.qcow2
+  - QEMU/cumulus-linux-3.7.0-vx-amd64-qemu.qcow2.md5sum
+  - QEMU/debian9.qcow2
+  - QEMU/debian9.qcow2.md5sum
+  - QEMU/disk.vmdk
+  - QEMU/disk.vmdk.md5sum
+  - QEMU/empty8G.qcow2
+  - QEMU/empty8G.qcow2.md5sum
+  - QEMU/frr4.0-vm0.1.qcow2
+  - QEMU/frr4.0-vm0.1.qcow2.md5sum
+  - QEMU/IOSv_startup_config.img
+  - QEMU/IOSv_startup_config.img.md5sum
+  - QEMU/lede-17.01.4-x86-generic-combined-squashfs.img
+  - QEMU/lede-17.01.4-x86-generic-combined-squashfs.img.md5sum
+  - QEMU/metasploitable.qcow2
+  - QEMU/metasploitable.qcow2.md5sum
+  - QEMU/openwrt-15.05.1-x86-kvm_guest-combined-ext4.img
+  - QEMU/openwrt-15.05.1-x86-kvm_guest-combined-ext4.img.md5sum
+  - QEMU/openwrt-18.06.2-x86-64-combined-ext4.img
+  - QEMU/openwrt-18.06.2-x86-64-combined-ext4.img.md5sum
+  - QEMU/titanium-final.7.3.0.D1.1.qcow2
+  - QEMU/titanium-final.7.3.0.D1.1.qcow2.md5sum
+  - QEMU/ubuntu1804.qcow2
+  - QEMU/ubuntu1804.qcow2.md5sum
+  - QEMU/vios-adventerprisek9-m.vmdk.SPA.156-2.T
+  - QEMU/vios-adventerprisek9-m.vmdk.SPA.156-2.T.md5sum
+  - QEMU/vios_l2-adventerprisek9-m.03.2017.qcow2
+  - QEMU/vios_l2-adventerprisek9-m.03.2017.qcow2.md5sum
+  - QEMU/VSR1000_HPE-CMW710-R0327L01-X64.qco
+  - QEMU/VSR1000_HPE-CMW710-R0327L01-X64.qco.md5sum
+  - QEMU/vyos-1.1.8-amd64.iso
+  - QEMU/vyos-1.1.8-amd64.iso.md5sum
+  - QEMU/winxpvm.qcow2
+  - QEMU/winxpvm.qcow2.md5sum

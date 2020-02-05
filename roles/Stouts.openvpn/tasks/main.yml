@@ -1,0 +1,5 @@
+---
+
+- import_tasks: openvpn.yml
+  when: openvpn_enabled | bool
+  tags: openvpn

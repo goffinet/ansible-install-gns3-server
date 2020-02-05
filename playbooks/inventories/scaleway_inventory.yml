@@ -1,0 +1,8 @@
+plugin: scaleway
+regions:
+  - par1
+tags:
+  - gns3stest
+variables:
+  ansible_host: public_ip.address
+  state: running

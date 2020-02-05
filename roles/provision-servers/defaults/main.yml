@@ -1,0 +1,32 @@
+---
+## Scaleway variables
+
+# Servers properties
+scw_type: C2S # C2S, C2M, C2L for bare-metal
+scw_region: par1 # par1, ams1
+scw_image_name: "Ubuntu Bionic Beaver"
+scw_image_arch: "x86_64" # arm64
+scw_image_size: 50000000000
+scw_image: f974feac-abae-4365-b988-8ec7d1cec10d
+
+# Should be secret !
+# Define your 'SCW_TOKEN' and 'SCW_ORGANIZATION' as Env variables
+scw_token: "{{ lookup('env','SCW_TOKEN') }}"
+scw_organization: "{{ lookup('env','SCW_ORGANIZATION') }}"
+
+## Packet variables
+
+# Servers properties
+packet_facility: "ams1"
+packet_plan: "t1.small.x86"
+packet_os: "ubuntu_18_04"
+
+# Should be secret !
+# Define your 'PACKET_API_TOKEN' as Env variable
+packet_auth_token: "{{ lookup('env','PACKET_API_TOKEN') }}"
+
+## Cloudflare variables
+
+# Define your 'CLOUDFLARE_API_EMAIL' and 'CLOUDFLARE_API_EMAIL' as Env variables
+cloudflare_account_email: "{{ lookup('env','CLOUDFLARE_API_EMAIL') }}"
+cloudflare_account_api_token: "{{ lookup('env','CLOUDFLARE_API_EMAIL') }}"

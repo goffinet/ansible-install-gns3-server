@@ -1,0 +1,3 @@
+---
+gns3s_stable: "http://ppa.launchpad.net/gns3/ppa/ubuntu"
+gns3s_unstable: "http://ppa.launchpad.net/gns3/unstable/ubuntu"

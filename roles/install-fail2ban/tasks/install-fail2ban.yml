@@ -1,0 +1,14 @@
+- name: "install packages for fail2ban"
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    force: yes
+    state: present
+    force_apt_get: yes
+    name: fail2ban
+- name: "enable and start the fail2ban service"
+  systemd:
+    name: fail2ban
+    state: started
+    enabled: yes
+#  notify: restart fail2ban

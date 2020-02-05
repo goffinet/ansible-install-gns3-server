@@ -1,0 +1,14 @@
+---
+- name: "Restart Packet servers"
+  packet_device:
+    hostnames: ["{{ inventory_hostname_short }}"]
+    project_id: "{{ packet_project_id }}"
+    state: rebooted
+  delegate_to: 127.0.0.1
+
+- name: "Wait 600 seconds, start checking after 10 seconds"
+  wait_for_connection:
+    delay: 10
+    timeout: 600
+    connect_timeout: 10
+    sleep: 5

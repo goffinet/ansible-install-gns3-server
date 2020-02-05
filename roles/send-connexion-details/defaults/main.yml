@@ -1,0 +1,77 @@
+language: fr
+message:
+  default: "No message in particular. Your Instructor."
+  fr: |
+      Bonjour,
+
+      Veuillez suivre les intsructions suivantes:
+
+      1. Télécharger un clientOpenVPN :
+
+        * Pour Windows : https://openvpn.net/index.php/open-source/downloads.html
+        * Pour Mac OS x : https://tunnelblick.net/
+
+      2. Installer OpenVPN.
+
+      3. Veuillez, redémmarrer votre ordinateur. C'est important, faites-le s'il vous plaît.
+
+      4. Télécharger le fichier de configuration ci-joint.
+
+      4. Importer le fichier de configuration dans OpenVPN et monter la connexion.
+
+      5. Télécharger GNS3-GUI :
+
+        * Pour Windows : https://github.com/GNS3/gns3-gui/releases/download/v{{ gns3server_version.stdout }}/GNS3-{{ gns3server_version.stdout }}-all-in-one.exe
+        * Pour Mac OS X : https://github.com/GNS3/gns3-gui/releases/download/v{{ gns3server_version.stdout }}/GNS3-{{ gns3server_version.stdout }}.dmg
+        * Pour Linux, veuillez suivre les indications du lien suivant : https://docs.gns3.com/1QXVIihk7dsOL7Xr7Bmz4zRzTsJ02wklfImGuHwTlaA4/index.html
+
+      6. Installer GNS3-GUI. Vous pouvez éviter les outils commerciaux.
+
+      7. Lancer GNS3 and choisir : "Run everything on a remote server (advanced usage)".
+
+      8. Remplir le champ d'adresse du serveur avec "172.16.253.1".
+
+      9. Remplir le champ de port avec la valeur "3080".
+
+      10. Décocher la case "authentication"
+
+      Cordialement,
+
+      Votre formateur pour cette session.
+      François Goffinet
+  en: |
+      Hello,
+
+      Please, follow the instructions below:
+
+      1. Download an OpenVPN Client :
+
+        * Please download an openvpn client for Windows : https://openvpn.net/index.php/open-source/downloads.html
+        * Please download an openvpn client for Mac OS x : https://tunnelblick.net/
+
+      2. Install OpenVPN.
+
+      3. Please, reboot the terminal, please do it.
+
+      3. Download your OpenVPN configuration file attached to this message
+
+      4. Import the configuration file in OpenVPN and connect it
+
+      5. Download GNS3-GUI :
+
+        * Please download and install GNS3-GUI for Windows : https://github.com/GNS3/gns3-gui/releases/download/v{{ gns3server_version.stdout }}/GNS3-{{ gns3server_version.stdout }}-all-in-one.exe
+        * Please download and install GNS3-GUI for Mac OS X : https://github.com/GNS3/gns3-gui/releases/download/v{{ gns3server_version.stdout }}/GNS3-{{ gns3server_version.stdout }}.dmg
+
+      6. Install GNS3-GUI. You can skip commercial tools.
+
+      7. Launch GNS3 and choose the "Run everything on a remote server (advanced usage)"
+
+      8. Fill in the IP address "172.16.253.1"
+
+      9. Fill in the port "3080"
+
+      10. Uncheck authentication
+
+      Best regards,
+
+      Your instructor for this training course.

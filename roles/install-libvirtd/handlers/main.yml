@@ -1,0 +1,5 @@
+---
+- name: restart libvirtd
+  systemd:
+    name: libvirtd
+    state: restarted

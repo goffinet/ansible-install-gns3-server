@@ -1,0 +1,45 @@
+---
+- name: "upgrade all packages"
+  apt:
+    update_cache: yes
+    force: yes
+    force_apt_get: yes
+    upgrade: yes
+- name: "install libvirtd"
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    force: yes
+    state: present
+    force_apt_get: yes
+    name: "{{ libvirtd_apt }}"
+- name: "Enable Nested Hardware-assisted Virtualization"
+  lineinfile:
+    path: /etc/modprobe.d/kvm-intel.conf
+    line: options kvm-intel nested=Y
+    create: yes
+- name: "Enable default Libvirtd Bridge"
+# see https://superuser.com/questions/1395623/problems-while-installing-libvirt-python-on-macos
+#  virt_net:
+#    autostart: yes
+#    command: start
+#    name: default
+  block:
+    - name: "List inactive bridges"
+      command: /usr/bin/virsh net-list --inactive --name
+      register: inactive
+      changed_when: inactive.rc != 0
+    - name: "List no-autostart bridges"
+      command: /usr/bin/virsh net-list --no-autostart --name
+      register: noautostart
+      changed_when: inactive.rc != 0
+    - name: "Start default bridge"
+      command: /usr/bin/virsh net-autostart default
+      when: '"default" in noautostart.stdout'
+    - name: "Enable default bridge on startup"
+      command: /usr/bin/virsh net-start default
+      when: '"default" in inactive.stdout'
+- name: restart libvirtd
+  systemd:
+    name: libvirtd
+    state: restarted

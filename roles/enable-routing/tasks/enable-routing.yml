@@ -1,0 +1,32 @@
+- name: "disable anti-routing rule to the nat cloud out"
+  iptables:
+    chain: FORWARD
+    out_interface: "{{ item.bridge }}"
+    reject_with: icmp-port-unreachable
+    state: absent
+  loop: "{{ enable_routing }}"
+  when: enable_routing is defined
+- name: "disable anti-routing rule to the nat cloud in"
+  iptables:
+    chain: FORWARD
+    in_interface: "{{ item.bridge }}"
+    reject_with: icmp-port-unreachable
+    state: absent
+  loop: "{{ enable_routing }}"
+  when: enable_routing is defined
+- name: "enable routing beteween the VPN tunnel and the NAT cloud"
+  iptables:
+    chain: FORWARD
+    source: "{{ item.network_tunnel }}"
+    destination: "{{ item.network_bridge }}"
+    jump: ACCEPT
+  loop: "{{ enable_routing }}"
+  when: enable_routing is defined
+- name: "enable routing beteween the NAT cloud and the VPN tunnel"
+  iptables:
+    chain: FORWARD
+    source: "{{ item.network_bridge }}"
+    destination: "{{ item.network_tunnel }}"
+    jump: ACCEPT
+  loop: "{{ enable_routing }}"
+  when: enable_routing is defined

@@ -1,0 +1,24 @@
+---
+- name: "INSTALL GNS3 STACK"
+  hosts: all
+  strategy: free
+  gather_facts: true
+  vars:
+    gns3_release: "stable" # "stable", "unstable"
+  vars_files:
+    - vars/main.yml
+  roles:
+    - name: "create a ca"
+      role: nkakouros.easyrsa
+    - name: "install openvpn"
+      role: Stouts.openvpn
+    - name: "install libvirtd"
+      role: install-libvirtd
+    - name: "install docker-engine"
+      role: geerlingguy.docker
+    - name: "install gns3-server"
+      role: install-gns3-server
+    - name: "install fail2ban"
+      role: install-fail2ban
+    - name: "enable routing"
+      role: enable-routing

@@ -1,0 +1,11 @@
+---
+## Adapt it to your needs
+## Encrypt it with `ansible-vault encrypt vars/main.yml`
+## Cloudflare DNS entries update
+#cloudflare_account_email: "mail@domain.com"
+#cloudflare_account_api_token: "XXXXX"
+# Scaleway ID
+#scw_api_token: "XXXXX"
+#scw_organization: "XXXXX"
+# Packet ID
+#packet_auth_token: "XXXXX"

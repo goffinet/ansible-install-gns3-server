@@ -1,0 +1,21 @@
+---
+- name: "Set authorized keys"
+  hosts: all
+  strategy: free
+  gather_facts: false
+  vars:
+    users:
+      - root
+      - gns3
+    github_user: "goffinet"
+    ssh_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3J7mjKyoaCxYylHjM7SDPiQGtg6YG+DYqR5Tad08gOhJ6/XSxIHOHUOA065XhFdsZ1LRXxOxmkIPYbhNMplX8c6NTXjNSLzyZ6TlcbyH+QTa7q+P/dx+XRLWDaRsNtK3jTcqLB9W0aH6UeVNYWQPpuY0rhqgFd8iI7CDM3NQlNByZcKRpmeO+SOlaudFs1oxJ3UET4n53scgFFXkgie9i9FXVoKudhtn3ChGf/6Irl/0qFXs0WeQ1P2uNd7TP54HOcYF4QUm60CrOJvnUj2NqJySz7s1Upn4APObrFlHGHCzt82C8uGiebU3WmT+XIjKoHCZEqU3CpCPT/jZmQVaF root@access0"
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4RdLzJ9WWyaKJ1HIAq4DXq/uB9fQwtNV67//b242utDatJLjObIOkiKVDfK5uCXSOV+m2d73D4qkptbcaIMJjVW3bzH1aT8KhJj02Vl6v6AIGicQcZFDR6srvWP/A3Qco5YWWkOACHwwvbVBIrPwooE4nBAa6jp7N2hznDpO99PGHwKb15Cpo1xKgF954gJfezoVm1WaYf52AouI0fRMlNK/dP9AbaFn2AXfIdwfjVUCXlLG86Yg26Iwrf4NEnwr3JgTOsDTQMrCGxzuJ5qvnYRJFaDjDna99lH3iBxOBJGdPlu1D/e30YQe3m0Da/yZFfd+0IAh1AnajUD6qB49p root@gns3stest0"
+      - "https://github.com/{{ github_user }}.keys"
+  tasks:
+    - name: Set authorized keys
+      authorized_key:
+        user: "{{ item.1 }}"
+        state: present
+        key: "{{ item.0 }}"
+      loop: "{{ ssh_keys | product(users) | list }}"

@@ -1,0 +1,10 @@
+[default]
+# Object Storage Region
+host_base = {{ S3_URL }}
+host_bucket = %(bucket)s.{{ S3_URL }}
+bucket_location = {{ S3_REGION }}
+use_https = True
+
+# Login credentials
+access_key = {{ S3_ACCESS_KEY }}
+secret_key = {{ S3_SECRET_KEY }}

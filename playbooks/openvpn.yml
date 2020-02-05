@@ -1,0 +1,27 @@
+---
+- name: Install OpenVPN
+  gather_facts: true
+  hosts: all
+  vars:
+    # EasyRSA
+    easyrsa_generate_dh: true
+    easyrsa_servers:
+      - name: server
+    easyrsa_clients:
+      - name: client
+    easyrsa_pki_dir: /etc/easyrsa/pki
+    # OpenVPN
+    openvpn_use_pam: false
+    openvpn_client_to_client: false
+    openvpn_unified_client_profiles: true
+    openvpn_keydir: "{{ easyrsa_pki_dir }}"
+    openvpn_clients: "{{ easyrsa_clients }}"
+    openvpn_download_clients: false
+    openvpn_download_dir: /tmp/
+    openvpn_server: 172.16.253.0 255.255.255.0
+    openvpn_route_traffic: true
+    openvpn_route_ranges:
+      - 192.168.122.0 255.255.255.0
+  roles:
+    - role: nkakouros.easyrsa
+    - role: Stouts.openvpn

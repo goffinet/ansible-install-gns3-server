@@ -1,0 +1,44 @@
+---
+## General variables
+# EasyRSA variables
+easyrsa_generate_dh: true
+easyrsa_servers:
+  - name: server
+easyrsa_clients:
+  - name: client
+easyrsa_pki_dir: /etc/easyrsa/pki
+# OpenVPN variables
+openvpn_use_pam: false
+openvpn_client_to_client: false
+openvpn_comp_lzo: false
+openvpn_unified_client_profiles: true
+openvpn_keydir: "{{ easyrsa_pki_dir }}"
+openvpn_clients: "{{ easyrsa_clients }}"
+openvpn_download_clients: true
+openvpn_download_dir: /tmp/
+openvpn_server: 172.16.253.0 255.255.255.0
+openvpn_route_traffic: true
+openvpn_route_ranges:
+  - 192.168.122.0 255.255.255.0
+# Docker variables
+docker_users:
+  - gns3
+# GNS3-server variables
+gns3s_host: "172.16.253.1"
+gns3s_port: "3080"
+gns3s_home: /home/gns3/
+# Files synchronization
+gns3s_files:
+  - s3src: s3://labimages/gns3/images
+    s3dst: "{{ gns3s_home }}"
+  - s3src: s3://labimages/gns3/projects
+    s3dst: "{{ gns3s_home }}"
+#  - s3src: s3://labimages/gns3/appliances
+#    s3dst: /usr/share/gns3/gns3-server/lib/python3.6/site-packages/gns3server
+easyrsa_conf_req_country: FR
+easyrsa_conf_req_cn: "{{ inventory_hostname }}"
+easyrsa_conf_req_province: "Paris"
+easyrsa_conf_req_city: "Paris"
+easyrsa_conf_req_org: "GNS3 labs"
+easyrsa_conf_req_email: "root@{{ inventory_hostname }}"
+easyrsa_conf_req_ou: "gns3labs"

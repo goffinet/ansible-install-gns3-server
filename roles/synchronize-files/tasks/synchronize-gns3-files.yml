@@ -1,0 +1,53 @@
+---
+- name: "Include gns3 images variables for this role"
+  include_vars: gns3-images.yml
+- name: "install python3-pip package"
+  package:
+    name: python3-pip
+    state: present
+- name: "remove s3cmd package"
+  package:
+    name: s3cmd
+    state: absent
+- name: "install python-magic via pip"
+  pip:
+    name: python-magic
+- name: "install python-dateutil via pip"
+  pip:
+    name: python-dateutil
+- name: "install six via pip"
+  pip:
+    name: six
+- name: "install s3cmd via pip"
+  pip:
+    name: s3cmd
+- name: "configure s3cmd"
+  template:
+    src: s3cfg.j2
+    dest: /root/.s3cfg
+- name: "copy files"
+  command: "s3cmd sync {{ item.s3src }} {{ item.s3dst }}"
+  register: result
+  changed_when: result.rc
+  loop: "{{ gns3s_files }}"
+  when: gns3s_files is defined
+- name: "set owner and group on gns3 folders"
+  file:
+    dest:  "{{ gns3s_home }}"
+    owner: gns3
+    group: gns3
+    recurse: yes
+- name: "remove s3cmd configuration"
+  file:
+    path: /root/.s3cfg
+    state: absent
+- name: restart gns3
+  block:
+    - name: stop gns3
+      systemd:
+        name: gns3
+        state: stopped
+    - name: start gns3
+      systemd:
+        name: gns3
+        state: started

@@ -1,0 +1,6 @@
+---
+## Adapt it to your needs
+## Encrypt it with `ansible-vault encrypt vars/main.yml`
+#mail_secret: "password"
+#from_secret: "xxx@xxxx.xxx"
+#to_secret: "yyy@yyyy.yyy"

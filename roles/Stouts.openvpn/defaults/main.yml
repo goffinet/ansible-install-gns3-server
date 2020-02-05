@@ -1,0 +1,138 @@
+---
+
+# Set to 'false' to completely disable the role
+openvpn_enabled: true
+
+# Installation {{{
+openvpn_use_external_repo: false
+# Set to 'true' to install openvpn from the upstream repo
+
+openvpn_etcdir: /etc/openvpn
+# The OpenVPN configuration directory
+
+openvpn_keydir: "{{ openvpn_etcdir }}/keys"
+# The directory where the keys will be found. This should be a pki folder from
+# easyrsa. Under this folder, the role will expect to find the pem keys and
+# certificates for:
+#
+# - the server (private/server.key and issued/server.crt)
+# - the clients (private/client-1.key, issued/client-2.crt, etc)
+# - the ca (issued/ca.crt)
+#
+# Also:
+# - the Diffie-Hellman parameters should be also located there (dh.pem)
+# - the CA certificate (ca.pem)
+#
+# You can generate these keys and certificates using another role. See the
+# README. Then you can simply point this variable to the pki folder of the
+# easyrsa installation and all keys/certificates will be located fine.
+# }}}
+# Server configuration {{{
+# The interface that traffic will come in from (WARNING default: any)
+openvpn_interface: ''
+
+# Default settings (See OpenVPN documentation)
+openvpn_host: "{{ inventory_hostname }}"
+
+openvpn_port: 1194
+openvpn_proto: udp
+openvpn_dev: tun
+openvpn_server: 10.8.0.0 255.255.255.0
+openvpn_bridge: {}
+openvpn_max_clients: 100
+openvpn_log: /var/log/openvpn.log
+openvpn_keepalive: "10 120"
+openvpn_ifconfig_pool_persist: ipp.txt
+openvpn_comp_lzo: true
+openvpn_cipher: BF-CBC
+openvpn_status: openvpn-status.log
+openvpn_verb: 3
+openvpn_user: nobody
+openvpn_group: nogroup
+openvpn_resolv_retry: infinite
+openvpn_client_to_client: true
+
+openvpn_server_options: []
+# Additional server options that are not covered by the above variables. For
+# instace:
+# openvpn_server_options:
+# - dev-node MyTap
+# - client-to-client
+# }}}
+# Networking {{{
+# Set to true to make the vpn server NAT incoming traffic
+openvpn_route_traffic: false
+
+# Network ranges that the connecting clients should try to reach using the VPN
+# connection. Example:
+# openvpn_route_ranges:
+#   - 192.168.0.0 255.255.255.0
+#   - 192.168.10.0 255.255.255.0
+openvpn_route_ranges: []
+
+# DNS servers to push to the connecting client to avoid leaks via DNS queries
+openvpn_dns_servers: []
+# }}}
+# Clients {{{
+openvpn_clients:
+  - client
+# Make clients certificate
+
+openvpn_clients_revoke: []
+# Revoke clients certificates
+
+openvpn_client_options: []
+# Additional client options. These will be placed in the ovpn files of all the
+# clients.
+# openvpn_client_options:
+# - dev-node MyTap
+# - client-to-client
+
+openvpn_unified_client_profiles: false
+# Whether to embed CA, cert, and key info inside client OVPN config file.
+
+openvpn_download_clients: false
+openvpn_download_dir: "client_credentials/"
+openvpn_download_extract: "{{ openvpn_download_clients }}"
+# Download the created client credentials as a zip to the specified directory on
+# the Ansible controller and, optionally, extract them.
+
+openvpn_ccd: /etc/openvpn/ccd/
+# The ccd (clients configuration directory). This will contain files with
+# configuration directives that the server will apply per connecting client.
+
+openvpn_ccd_configs: []
+# A list of configuration directives to be placed under the ccd for the
+# specified clients. For instance:
+#
+# - name: client
+#   content: |
+#     ifconfig-push 192.168.0.2 255.255.255.0
+#
+# The above will create a file named `client` under the ccd folder containing
+# the `ifconfig-push` directive. This will be applied to the `client` when it
+# connects to the openvpn server.
+# }}}
+# Authentication {{{
+# Use PAM authentication
+openvpn_use_pam: true
+openvpn_use_pam_users: []
+# Only for Debian-based, CentOS requires 'pam_pwdfile' from third party repos.
+# If empty use system users
+# otherwise use users from the option
+# openvpn_use_pam_users:
+# - { name: user, password: password }
+
+# LDAP authentication and configuration (optional)
+openvpn_use_ldap: false
+openvpn_ldap_tlsenable: 'false'
+openvpn_ldap_follow_referrals: 'false'
+
+# Use simple authentication (default is disabled)
+openvpn_simple_auth: false
+openvpn_simple_auth_password: ""
+
+# Enable HMAC signature to TLS handshakes
+openvpn_tls_auth: false
+openvpn_tls_key: "ta.key"
+# }}}

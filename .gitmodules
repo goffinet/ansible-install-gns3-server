@@ -1,0 +1,9 @@
+[submodule "roles/Stouts.openvpn"]
+	path = roles/Stouts.openvpn
+	url = https://github.com/Stouts/Stouts.openvpn
+[submodule "roles/nkakouros.easyrsa"]
+	path = roles/nkakouros.easyrsa
+	url = https://github.com/nkakouros-original/ansible-role-easyrsa
+[submodule "roles/geerlingguy.docker"]
+	path = roles/geerlingguy.docker
+	url = https://github.com/geerlingguy/ansible-role-docker

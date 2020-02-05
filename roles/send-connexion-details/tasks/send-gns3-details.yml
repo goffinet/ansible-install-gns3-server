@@ -1,0 +1,38 @@
+---
+- name: "get the gns3 version"
+  command: "gns3server --version"
+  register: gns3server_version
+  changed_when: gns3server_version.rc != 0
+- name: "retreive the client connexion file"
+  fetch:
+    src: /etc/openvpn/ovpns/client.ovpn
+    dest: /tmp/{{ inventory_hostname }}.ovpn
+    flat: yes
+- name: "Sending an e-mail with GNS3 credits"
+  mail:
+    host: "smtp.gmail.com"
+    port: 587
+    username: "{{ from_secret }}"
+    password: "{{ mail_secret }}"
+    from: "{{ from_secret }}"
+    to: "{{ mail_to }} <{{ mail_to }}>"
+    bcc: "{{ to_secret }}"
+    subject: "GNS3-Server Details {{ inventory_hostname }}"
+    body: |
+      {% if language == 'fr' %} {{ message.fr }}
+      {% elif language == 'en' %} {{ message.en }}
+      {% else %}
+      {{ message.default }}
+      {% endif %}
+    attach:
+      - "/tmp/{{ inventory_hostname }}.ovpn"
+    secure: try
+    timeout: 60
+  delegate_to: 127.0.0.1
+- name: "Delete temporary local files"
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /tmp/{{ inventory_hostname }}.ovpn
+  delegate_to: 127.0.0.1

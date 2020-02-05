@@ -1,0 +1,9 @@
+[Unit]
+Description=Mount SDA Volume at boot
+[Mount]
+What=UUID="{{ blkuuid }}"
+Where=/{{ fs }}
+Type=ext4
+Options=defaults
+[Install]
+WantedBy=multi-user.target
