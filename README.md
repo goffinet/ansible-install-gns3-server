@@ -42,7 +42,9 @@ cd ansible-install-gns3-server
 pip install -r requirements.txt
 ```
 
-## Inventory
+## Inventories
+
+You will find some inventories inside the `playbooks/inventories` folder.
 
 Minimal (without any provision, sending mail and files synchronization) :
 
